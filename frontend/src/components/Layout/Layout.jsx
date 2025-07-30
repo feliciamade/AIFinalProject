@@ -1,15 +1,16 @@
 import react from 'react';
-import Navbar from './components/Navbar'; 
-import Navbar from './components/Footer'; 
+import Navbar from "../Navbar/Navbar.jsx";
+//import Footer from './components/Footer'; 
 
 const Layout = ({children}) => {
 
+    return (
     <div className = "app-shell">
-    <Header />
-    <Navbar />
     <main className ="pageContent">
         {children}
     </main>
-    <Footer /> 
+   {/*<Footer /> */}
     </div>
-};
+    )};
+
+export default Layout;
