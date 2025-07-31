@@ -1,9 +1,5 @@
 main {
-background-color: #222C1C;
-height:100vh;
-display: flex;
-align-items: center;
-justify-content: center;
+margin:0px;
 }
 
 img {
@@ -30,6 +26,8 @@ flex:1;
 align-items: center;
 justify-content: center;
 padding:80px;
+background-color: #222C1C;
+height:80vh;
 }
 
 h1 {
@@ -43,4 +41,14 @@ p {
 
 .greenText {
     color:#6CA219;
+}
+
+section {
+    height:50vh;
+    padding:80px;
+}
+
+section h2 {
+    font-size: 50px;
+    color:rgb(71, 30, 10);
 }
