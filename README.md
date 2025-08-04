@@ -2,7 +2,10 @@
 ## Root and Revive
 This is an App that will make it easier for users to find menu items that fit their dietary requirements when they visit a restaurant. A chatbot can help them plan and budget their meals when they eat out. 
 
-## Installation Instructions
+## Setup Guide
+
++ React
+    + npm install
 
 + Python
     + sudo apt update
