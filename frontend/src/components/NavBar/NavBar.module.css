@@ -3,18 +3,14 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap:20px;
     font-family: "Poppins", sans-serif;
-    padding:40px 80px 40px 80px;
-    background-color: #222C1C;
-
+    padding:40px 80px 40px 80px;    background-color: #151813;
 }
 
 .pages {
     display:flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     gap:20px;
 }
 
@@ -24,6 +20,16 @@
     color:white;
     font-size: 18px;
     font-weight: 500;
+}
+
+a:hover {
+    border-bottom: 3.5px solid #ff7194 ;
+     line-height: 1.5;
+}
+
+.active {
+    border-bottom: 3.5px solid #ff7194 ;
+     line-height: 1.5;
 }
 
 

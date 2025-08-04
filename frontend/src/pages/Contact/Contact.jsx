@@ -1,12 +1,35 @@
 import React from 'react';
 
-function Contact() {
-  return (
-    <div>
-      <h1>Contact</h1>
-      <p>Contact</p>
-    </div>
-  );
+//Styles
+import styles from "./Contact.module.css";
+
+//Components
+
+import Layout from "../../components/Layout/Layout.jsx"; 
+import ChatBubble from "../../components/ChatBubble/ChatBubble.jsx";
+
+const Home =() => {
+return(
+<Layout>
+
+
+<main >
+  <div className={styles.content}>
+  <div className={styles.left}>
+     <h1>We started by <span className={styles.underlineText}>  listening. </span> </h1>
+  </div>
+  <div className={styles.right}>
+  <ChatBubble />
+  </div>
+  </div>
+<section className={styles.section}>
+  <h2>
+    “ We're rooted in finding you the best <span className={styles.greenText}>
+      vegan, gluten-free, and dairy-free </span> options to revive your well-being.” </h2>
+</section>
+</main>
+</Layout>
+);
 }
 
-export default Contact;
+export default Home; 

@@ -7,10 +7,10 @@ function NavBar() {
     <nav className={styles.navBar} >
       <h2 className={styles.logo}>Root & Revive</h2>
       <div className={styles.pages}>
-      <a href="/">Home</a>
+      <a href="/" className={styles.active}>Home</a>
       <a href="/restaurants">Restaurants</a>
       <a href="/Contact">Contact</a>
-      <a href="/about">About Us</a>
+      <a href="/about">Mission</a>
       </div>    
       <Button name ="Ask Herb" />
     </nav>
