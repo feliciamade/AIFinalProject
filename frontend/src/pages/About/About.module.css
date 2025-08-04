@@ -1,0 +1,16 @@
+.content {
+    display: flex;
+    flex-direction: row;
+    padding:80px;
+    width:1000px;
+}
+
+.left{
+    text-align: left;
+}
+.right{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:20px;
+    flex-grow: 2;
+}

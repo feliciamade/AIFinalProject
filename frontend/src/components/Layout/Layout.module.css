@@ -1,0 +1,12 @@
+.pageContent {
+    position: relative;
+}
+
+
+.donateButton {
+    position: fixed;
+    right: -30px;
+    top: 60%;
+    transform: translateY(-50%) rotate(-90deg);
+    border-radius: 0px;
+}
