@@ -34,15 +34,15 @@ return(
   </div>
   </div>
 <section className={styles.section}>
-  <h2>
+  <h1>
     “ We're rooted in finding you the best <span className={styles.greenText}>
-      vegan, gluten-free, and dairy-free </span> options to revive your well-being.” </h2>
+      vegan, gluten-free, and dairy-free </span> options to revive your well-being.” </h1>
 </section>
 
 <div className={styles.reccomendations}>
-  <Article />
-  <Article />
-  <Article />
+  <Article description={"Article 1 description"}/>
+  <Article description={"Article 2 description"}/>
+  <Article description={"Article 3 description"}/>
 </div>
 
 <section className={styles.section}></section>
@@ -53,8 +53,6 @@ return(
   <img src={Two} alt="" />
   <img src={Three} alt="" />
 </section>
-
-{/*<MemphisMap />*/}
 
 </main>
 </Layout>

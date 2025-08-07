@@ -5,10 +5,10 @@ import Button from "../Button/Button.jsx";
 function NavBar() {
   return (
     <nav className={styles.navBar} >
-      <h2 className={styles.logo}>Root & Revive</h2>
+      <h3 className={styles.logo}>Root & Revive</h3>
       <div className={styles.pages}>
       <a href="/" className={styles.active}>Home</a>
-      <a href="/restaurants">Restaurants</a>
+      <a href="/restaurant">Restaurant</a>
       <a href="/Contact">Contact</a>
       <a href="/about">Mission</a>
       </div>    

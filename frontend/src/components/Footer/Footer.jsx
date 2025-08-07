@@ -8,7 +8,7 @@ function Footer() {
         <footer>
 
         <div className={styles.Footer}>
-        <h2>Root & Revive</h2>
+        <h3>Root & Revive</h3>
         <div className={styles.Navigation}>
             <a href="/">Home</a>
             <a href="/restaurants">Restaurants</a>
@@ -16,10 +16,10 @@ function Footer() {
             <a href="/about">About Us</a>
         </div>
         <div className={styles.Contact}>
-            <p>Email Address</p>
+            <p>Email</p>
             <p>Phone</p>
-            <p>Physical Address</p>
-            <p>Contact Page Link</p>
+            <p>Address</p>
+            <p>Contact</p>
         </div>
         <div className={styles.Legal}>
              <a href="/">Privacy</a>
