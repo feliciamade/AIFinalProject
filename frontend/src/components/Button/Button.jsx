@@ -12,6 +12,7 @@ const Button = ({ name, color = '#ff7194', borderRadius ='5px', className }) => 
     fontSize: '15px',
     fontWeight: 500,
     marginTop: '10px',
+    letterSpacing: '1px',
     fontFamily: "Alexandria, sans-serif",
   };
 
