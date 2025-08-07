@@ -23,21 +23,20 @@
 }
 
 a:hover {
-    border-bottom: 3.5px solid #ff7194 ;
+    border-bottom: 1.5px solid #ff7194 ;
      line-height: 1.5;
 }
 
 .active {
-    border-bottom: 3.5px solid #ff7194 ;
+    border-bottom: 1.5px solid #ff7194 ;
      line-height: 1.5;
 }
 
 
 .logo {
-    font-weight: 800;
     color:white;
-    font-size: 28px;
-    letter-spacing: 1.2px;
+    font-weight: 100;
+
 }
 
 

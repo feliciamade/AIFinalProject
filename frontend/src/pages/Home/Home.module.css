@@ -1,3 +1,8 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
 main {
 margin:0px;
 display: flex;
@@ -6,7 +11,7 @@ align-items: center;
 }
 
 img {
-    width:100%;
+    width:80%;
     height:auto;
     transform:rotate(45deg);
     right:-20px;
@@ -31,16 +36,11 @@ flex:1;
 align-items: center;
 justify-content: center;
 padding:0px 100px;
-background-color: #151813;
 height: 100px;
+background-color: #151813;
 
 }
 
-h1 {
-    font-size: 55px;
-    font-weight: 800;
-    line-height: 1.2em;
-}
 
 .heroText{
     font-size: 25px;
@@ -52,17 +52,9 @@ p {
     width:90%;
 }
 
-
-.greenText {
-    color:#a9c860;
-}
-
-.underlineText {
-}
-
 section {
-    height:25vh;
-    padding:80px;
+    height:30vh;
+    padding:90px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,6 +85,6 @@ section h2 {
 }
 
 .sectionGrid img {
-    width:200px;
+    width:180px;
     height:auto;
 }

@@ -13,7 +13,7 @@ return(
 <Layout>
 
 
-<main >
+<main className={styles.missionMain}>
   <div className={styles.content}>
   <div className={styles.left}>
      <h1>We started by <span className={styles.underlineText}>  listening. </span> </h1>
