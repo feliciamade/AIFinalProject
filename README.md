@@ -33,6 +33,8 @@ This is an App that will make it easier for users to find menu items that fit th
 
 This is BERT model that has been fined tuned on Restaurant Data for text classification. It is being used to classify the descriptions for restaurants around Memphis as Gluten-Free, Vegan, or Dairy-Free.
 
+https://colab.research.google.com/drive/1CfpGmz0kVQ6MOosfRTzQUdHkT7mtSaQn?usp=sharing
+
 Team members:
 + Felicia
 + Ayana
