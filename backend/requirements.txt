@@ -4,7 +4,4 @@ pydantic
 google-genai
 chromadb
 pandas
-datasets
 sentence_transformers
-transformers
-accelerate
