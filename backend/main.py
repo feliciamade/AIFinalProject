@@ -47,10 +47,10 @@ dfembed = pd.DataFrame({
     "IDs": sample_data['ids'][:3],
     "Documents": sample_data['documents'][:3],
     "Metadatas": sample_data['metadatas'][:3],
-    "Embeddings": [str(emb)[:50] + "..." for emb in sample_data['embeddings'][:3]]  # Truncate embeddings
+    # "Embeddings": [str(emb)[:50] + "..." for emb in sample_data['embeddings'][:3]]  # Truncate embeddings
 })
 
-print(dfembed)
+#print(dfembed)
 
 model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
 
@@ -59,43 +59,50 @@ def get_embedding(text):
 
 # query_vector = get_embedding("Where can I get a vegan hamburger?")
 # results = collection.query(query_embeddings=[query_vector], n_results=1)
-# print(results["documents"][0][0])
+# print(results[results["documents"][0][0]])
+
+conversation_history = [{"role":"system", "content":"Hello! I am Erb. What type of restaurant are you looking for?"}]
 
 def generate_prompt(query):
+    conversation_history.append({"role":"user", "content":query})
     query_vector = get_embedding(query)
     results = collection.query(query_embeddings=[query_vector], n_results=1)
     restaurant = results["documents"][0][0]
     PROMPT = f"""
-    Use the following restaurant information to answer user queries. 
+    query: {query}
+    If the query does not ask about a restaurant recommendation just answer the query as it is.
+    If the query asks for a restaurant recommendation, use the following restuarant information to answer user query.
     {restaurant}
-    Query: {query}
         """
     return PROMPT
 
-prompt1 = generate_prompt("Where can I get a gluten-free breakfast?")
 
-print(prompt1)
+def chat_with_gpt(query):
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=f"You are friendly food expert {query}. If the user is getting a restaurant recommendation make it seem like a review and include what they will enjoy about it.",
+        config=types.GenerateContentConfig(
+            thinking_config=types.ThinkingConfig(thinking_budget=0) # Disables thinking
+        ),
+    )
+    chatbot_reply = f"{response.text}"
+    conversation_history.append({"role":"assistant", "content":chatbot_reply})
+    return conversation_history
 
-response = client.models.generate_content(
-    model="gemini-2.5-flash",
-    contents=f"You are a food expert who has a passion for connecting people with delicious food {prompt1}. Make it seem like a review and include what they will enjoy about it.",
-    config=types.GenerateContentConfig(
-        thinking_config=types.ThinkingConfig(thinking_budget=0) # Disables thinking
-    ),
-)
-print(response.text)
+class Message(BaseModel):
+    message:str
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
 
 
-# @app.get("/fruits", response_model=Fruits)
-# def get_fruits():
-#     print("Hello world")
-#     return Fruits(fruits=memory_db["fruits"])
-
-# @app.post("/fruits")
-# def add_fruit(fruit: Fruit):
-#     memory_db["fruits"].append(fruit)
-#     return fruit
+# endpoint to send prompts to chat api. formatted as json body:  {"message": "Translate..." }cd 
+@app.post("/ask")
+async def create_message(message: Message):
+    server_response = chat_with_gpt(generate_prompt(message.message))
+    return server_response
     
 
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
