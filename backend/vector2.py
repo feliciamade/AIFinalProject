@@ -59,3 +59,10 @@ for i, row in df.iterrows():
         }],
         documents=[row["Description"]]
     )
+  
+# chroma_client = chromadb.PersistentClient(path="./restvectors")
+# try:
+#     chroma_client.delete_collection(name="google-rest")
+#     print("Existing collection deleted.")
+# except Exception as e:
+#     print("No existing collection to delete.", e)
