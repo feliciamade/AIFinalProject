@@ -66,7 +66,7 @@ def generate_prompt(query):
     results = collection.query(query_embeddings=[query_vector], n_results=1)
     restaurant = results["documents"][0][0]
     PROMPT = f"""
-    Use the following restaurant information to answer user queries.
+    Use the following restaurant information to answer user queries. 
     {restaurant}
     Query: {query}
         """
@@ -78,7 +78,7 @@ print(prompt1)
 
 response = client.models.generate_content(
     model="gemini-2.5-flash",
-    contents=f"You are a food expert who has a passion for connecting people with delicious food {prompt1}.",
+    contents=f"You are a food expert who has a passion for connecting people with delicious food {prompt1}. Make it seem like a review and include what they will enjoy about it.",
     config=types.GenerateContentConfig(
         thinking_config=types.ThinkingConfig(thinking_budget=0) # Disables thinking
     ),
