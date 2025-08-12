@@ -44,9 +44,18 @@ def get_embedding(text: str) -> list[float]:
     embedding = model.encode(text)
     return embedding.tolist()
 
-chroma_client = chromadb.PersistentClient(path="./vectorstore")
+df["embedding"] = df["Description"].apply(get_embedding)
 
-collection = chroma_client.create_collection(name="restaurantlist")
+#chroma_client = chromadb.PersistentClient(path="./vectorstore")
+
+chroma_client = chromadb.CloudClient(
+  api_key='ck-4ZHQ41171HcAmeUvuNx3giWmsQStDsa3EzmMEhLkzsQC',
+  tenant='c29efb95-933f-4582-bb95-07481e3a03a0',
+  database='Restaurants2'
+)
+
+collection = chroma_client.create_collection(name="restaurantlist2")
+
 
 for i, row in df.iterrows():
     collection.add(
@@ -59,10 +68,9 @@ for i, row in df.iterrows():
         }],
         documents=[row["Description"]]
     )
-  
-# chroma_client = chromadb.PersistentClient(path="./restvectors")
+ 
 # try:
-#     chroma_client.delete_collection(name="google-rest")
+#     chroma_client.delete_collection(name="restaurantlist")
 #     print("Existing collection deleted.")
 # except Exception as e:
 #     print("No existing collection to delete.", e)
