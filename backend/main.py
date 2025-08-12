@@ -47,8 +47,8 @@ chromaclient = chromadb.HttpClient(
   }
 )
 
-collection_name = "restaurantlist2"
-collection = chromaclient.get_collection(name=collection_name)
+#collection_name = "restaurantlist2"
+#collection = chromaclient.get_collection(name=collection_name)
 
 # sample_data = collection.get(include=['documents', 'embeddings', 'metadatas'])
 
@@ -61,9 +61,10 @@ collection = chromaclient.get_collection(name=collection_name)
 
 #print(dfembed)
 
-model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
+#model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
 
 def get_embedding(text):
+    model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
     return model.encode(text).tolist()
 
 # query_vector = get_embedding("Where can I get a vegan hamburger?")
@@ -74,6 +75,8 @@ conversation_history = [{"role":"system", "content":"Hello! I am Erb. What type 
 
 def generate_prompt(query):
     conversation_history.append({"role":"user", "content":query})
+    collection_name = "restaurantlist2"
+    collection = chromaclient.get_collection(name=collection_name)
     query_vector = get_embedding(query)
     results = collection.query(query_embeddings=[query_vector], n_results=1)
     restaurant = results["documents"][0][0]
