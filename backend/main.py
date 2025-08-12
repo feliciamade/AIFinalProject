@@ -8,7 +8,6 @@ from typing import List
 from google import genai
 from google.genai import types
 import chromadb
-import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 
@@ -51,14 +50,14 @@ chromaclient = chromadb.HttpClient(
 collection_name = "restaurantlist2"
 collection = chromaclient.get_collection(name=collection_name)
 
-sample_data = collection.get(include=['documents', 'embeddings', 'metadatas'])
+# sample_data = collection.get(include=['documents', 'embeddings', 'metadatas'])
 
-dfembed = pd.DataFrame({
-    "IDs": sample_data['ids'][:3],
-    "Documents": sample_data['documents'][:3],
-    "Metadatas": sample_data['metadatas'][:3],
+# dfembed = pd.DataFrame({
+#     "IDs": sample_data['ids'][:3],
+#     "Documents": sample_data['documents'][:3],
+#     "Metadatas": sample_data['metadatas'][:3],
     # "Embeddings": [str(emb)[:50] + "..." for emb in sample_data['embeddings'][:3]]  # Truncate embeddings
-})
+# })
 
 #print(dfembed)
 
