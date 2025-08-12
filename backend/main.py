@@ -36,9 +36,19 @@ app.add_middleware(
 
 client = genai.Client(api_key=key)
 
-chromaclient = chromadb.PersistentClient(path="./vectorstore")
+#chromaclient = chromadb.PersistentClient(path="./vectorstore")
 
-collection_name = "restaurantlist"
+chromaclient = chromadb.HttpClient(
+  ssl=True,
+  host='api.trychroma.com',
+  tenant='c29efb95-933f-4582-bb95-07481e3a03a0',
+  database='Restaurants2',
+  headers={
+    'x-chroma-token': 'ck-xiDcWSvj1jeYSgCzWGSACn6XTbQAvZtKGew4RDjPA2A'
+  }
+)
+
+collection_name = "restaurantlist2"
 collection = chromaclient.get_collection(name=collection_name)
 
 sample_data = collection.get(include=['documents', 'embeddings', 'metadatas'])
@@ -58,8 +68,8 @@ def get_embedding(text):
     return model.encode(text).tolist()
 
 # query_vector = get_embedding("Where can I get a vegan hamburger?")
-# results = collection.query(query_embeddings=[query_vector], n_results=1)
-# print(results[results["documents"][0][0]])
+# results = collection.query(query_embeddings=[query_vector], n_results=2)
+# print(results["documents"][0][0])
 
 conversation_history = [{"role":"system", "content":"Hello! I am Erb. What type of restaurant are you looking for?"}]
 
