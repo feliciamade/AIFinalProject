@@ -1,13 +1,17 @@
-import React from 'react';
+import Layout from "../../components/Layout/Layout.jsx"; 
 
-function Resources() {
-  return (
-    <div>
-      <h1>Resources</h1>
-      <p>Dummy Text</p>
-      <p>Dummy Text</p>
-    </div>
-  );
+const Resources =() => {
+return(
+<Layout>
+
+<main >
+ 
+
+
+
+</main>
+</Layout>
+);
 }
 
-export default Resources;
+export default Resources; 
