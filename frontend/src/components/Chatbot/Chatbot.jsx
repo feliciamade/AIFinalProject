@@ -6,8 +6,7 @@ const Chatbot = () => {
 
   const [query, setQuery] = useState("");
 
-  async function askAssistant(event){
-  event.preventDefault();
+  async function askAssistant(){
   const body = {"message": query}
   const client = "http://localhost:5678/ask"
 
@@ -15,6 +14,12 @@ const Chatbot = () => {
   const conversation =  await response.json()
   console.log(conversation)
 
+  }
+
+  function handleSubmit(event){
+      event.preventDefault();
+      askAssistant();
+      setQuery("")
   }
 
 
@@ -52,12 +57,13 @@ const Chatbot = () => {
 
         {/* Chat Footer */}
         <div className={styles.chatFooter}>
-          <form className={styles.chatForm} onSubmit={askAssistant}>
+          <form className={styles.chatForm} onSubmit={handleSubmit}>
             <input 
               type="text" 
               placeholder="Message..." 
               className={styles.messageInput} 
               name="query"
+              value={query}
               onChange={(event) => setQuery(event.target.value)}
               required 
             />
