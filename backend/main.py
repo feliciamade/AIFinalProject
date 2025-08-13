@@ -22,6 +22,7 @@ app = FastAPI(debug=True)
 
 origins = [
     "http://localhost:3000",
+    "http://localhost:5173",
     # Add more origins here
 ]
 
@@ -71,7 +72,7 @@ def get_embedding(text):
 # results = collection.query(query_embeddings=[query_vector], n_results=2)
 # print(results["documents"][0][0])
 
-conversation_history = [{"role":"system", "content":"Hello! I am Erb. What type of restaurant are you looking for?"}]
+conversation_history = [{"role":"system", "content":"Hello! I am Herb. What type of restaurant are you looking for?"}]
 
 def generate_prompt(query):
     conversation_history.append({"role":"user", "content":query})

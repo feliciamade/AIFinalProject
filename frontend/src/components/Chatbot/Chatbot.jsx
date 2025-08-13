@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import styles from "./Chatbot.module.css";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Chatbot = () => {
+
+  const [query, setQuery] = useState("");
+
+  async function askAssistant(event){
+  event.preventDefault();
+  const body = {"message": query}
+  const client = "http://localhost:5678/ask"
+
+  const response = await fetch( client, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)})
+  const conversation =  await response.json()
+  console.log(conversation)
+
+  }
+
+
   return (
     <div className={styles.container}>
       {/* Main Chatbot Popup */}
@@ -37,11 +52,13 @@ const Chatbot = () => {
 
         {/* Chat Footer */}
         <div className={styles.chatFooter}>
-          <form className={styles.chatForm} action="#">
+          <form className={styles.chatForm} onSubmit={askAssistant}>
             <input 
               type="text" 
               placeholder="Message..." 
               className={styles.messageInput} 
+              name="query"
+              onChange={(event) => setQuery(event.target.value)}
               required 
             />
             <button className={styles.sendButton}>
