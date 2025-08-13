@@ -80,14 +80,14 @@ def generate_prompt(query):
     query_vector = get_embedding(query)
     results = collection.query(query_embeddings=[query_vector], n_results=1)
     restaurant = results["documents"][0][0]
+    print(restaurant)
     PROMPT = f"""
     query: {query}
-    If the query does not ask about a restaurant recommendation just answer the query as it is.
-    If the query asks for a restaurant recommendation, use the following restuarant information to answer user query.
+    If the query does not ask about a restaurant recommendation or where to get food just answer the query as it is.
+    If the query asks for a restaurant recommendation or where to get food, use the following restuarant information to answer user query.
     {restaurant}
         """
     return PROMPT
-
 
 def chat_with_gpt(query):
     response = client.models.generate_content(
