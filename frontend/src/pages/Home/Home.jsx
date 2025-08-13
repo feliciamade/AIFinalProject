@@ -4,8 +4,6 @@ import React from 'react';
 import styles from "./Home.module.css";
 
 //Components
-import Popup from "../../components/Popup/Popup.jsx";
-import Button from "../../components/Button/Button.jsx";
 import Article from "../../components/Article/Article.jsx";
 import Layout from "../../components/Layout/Layout.jsx"; 
 //import MemphisMap from "../../components/Map/Map.jsx"; 
@@ -20,15 +18,18 @@ const Home =() => {
 return(
 <Layout>
 
-<Popup />
-
 <main >
+
+   
   <div className={styles.content}>
+
   <div className={styles.left}>
      <h1>Rooted in <span className={styles.underlineText}>  Community </span> , Revived by Food </h1>
     <p className={styles.heroText}> Connecting you to the freshest
     local produce, crafted into vibrant meals. </p>
   </div>
+
+
   <div className={styles.right}>
     <img src={ratishImage} alt="a ratish" />
   </div>

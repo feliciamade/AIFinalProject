@@ -1,13 +1,17 @@
-import React from 'react';
+import Layout from "../../components/Layout/Layout.jsx"; 
 
-function Restaurant() {
-  return (
-    <div>
-      <h1>Restaurant</h1>
-      <p>Dummy Text</p>
-      <p>Dummy Text</p>
-    </div>
-  );
+const Resturant =() => {
+return(
+<Layout>
+
+<main >
+ 
+
+
+
+</main>
+</Layout>
+);
 }
 
-export default Restaurant;
+export default Resturant; 

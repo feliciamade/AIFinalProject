@@ -1,32 +1,18 @@
-import React, { useState } from 'react';
+// This is an example of a Popup component
+import React from "react";
 import styles from "./Popup.module.css";
-import Button from "../../components/Button/Button.jsx";
 
-function Popup() {
-    
-  const [isVisible, setIsVisible] = useState(true);
-
-  const handleCloseClick = () => {
-    setIsVisible(false);
-  };
-
+function Popup({ onClose }) {
   return (
-    <> 
-      {isVisible && ( 
-        <div className={styles.Popup}>
-          <button onClick={handleCloseClick} className={styles.closeButtonStyle}>
-            X
-          </button>
-          <h1>Dine Out, Worry-Free!</h1>
-          <p>
-           Tell us your dietary needs, and we'll find 
-           the perfect restaurants near you. Vegan? 
-           Gluten-Free? Dairy-Free? We've got you covered!
-          </p>
-          <Button name="Learn More" />
-        </div>
-      )}
-    </>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.popup} onClick={(e) => e.stopPropagation()}>
+        <button className={styles.closeButton} onClick={onClose}>
+          &times;
+        </button>
+        <h2>Ask Herb</h2>
+        <p>This is where your chat interface would go!</p>
+      </div>
+    </div>
   );
 }
 
