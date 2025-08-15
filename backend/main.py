@@ -1,5 +1,6 @@
 import uvicorn
 import os
+import string
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -68,6 +69,27 @@ def get_embedding(text):
     model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
     return model.encode(text).tolist()
 
+def intolerancefilter(string):
+  intolerance=[]
+  gluten=["gluten", "celiac", "gf", "wheat"]
+  dairy=["dairy"]
+  vegan=["vegan","plant"]
+  lowerstring=string.lower()
+  for punctuation in ',.?;"-':
+    lowerstring = lowerstring.replace(punctuation, "")
+  if any(x in lowerstring for x in gluten):
+    intolerance.append({"gluten-free": True})
+  if any(x in lowerstring for x in dairy):
+    intolerance.append({"dairy-free": True})
+  if any(x in lowerstring for x in vegan):
+    intolerance.append({"vegan": True})
+  #newstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("vegan","").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","")
+  for punctuation in ',.?;"':
+    lowerstring = lowerstring.replace(punctuation, "")
+  finalstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("vegan","").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","").replace("free","")
+  values = [finalstring, intolerance]
+  return(values)
+
 # query_vector = get_embedding("Where can I get a vegan hamburger?")
 # results = collection.query(query_embeddings=[query_vector], n_results=2)
 # print(results["documents"][0][0])
@@ -78,13 +100,21 @@ def generate_prompt(query):
     conversation_history.append({"role":"user", "content":query})
     collection_name = "restaurantlist2"
     collection = chromaclient.get_collection(name=collection_name)
-    query_vector = get_embedding(query)
-    results = collection.query(query_embeddings=[query_vector], n_results=1)
+    filteredqueryandmetadata = intolerancefilter(query)
+    filteredquery = filteredqueryandmetadata[0]
+    metadata = filteredqueryandmetadata[1]
+    query_vector = get_embedding(filteredquery)
+    if len(metadata) == 0:
+        results = collection.query(query_embeddings=[query_vector], n_results=1)
+    if len(metadata) == 1:
+        results = collection.query(query_embeddings=[query_vector], where=metadata[0], n_results=1)
+    if len(metadata) > 1: 
+        results = collection.query(query_embeddings=[query_vector], where={"$and": metadata}, n_results=1)
     restaurant = results["documents"][0][0]
     print(restaurant)
     PROMPT = f"""
     query: {query}
-    If the query does not ask about a restaurant recommendation or where to get food just answer the query as it is.
+    If the query does not ask about a restaurant recommendation or where to get food answer the query as it is.
     If the query asks for a restaurant recommendation or where to get food, use the following restuarant information to answer user query.
     {restaurant}
         """
