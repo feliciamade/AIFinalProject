@@ -74,6 +74,7 @@ def intolerancefilter(string):
   gluten=["gluten", "celiac", "gf", "wheat"]
   dairy=["dairy"]
   vegan=["vegan","plant"]
+  specificfood=["hamburger","burger","cake", "sandwich"]
   lowerstring=string.lower()
   for punctuation in ',.?;"-':
     lowerstring = lowerstring.replace(punctuation, "")
@@ -86,7 +87,10 @@ def intolerancefilter(string):
   #newstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("vegan","").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","")
   for punctuation in ',.?;"':
     lowerstring = lowerstring.replace(punctuation, "")
-  finalstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("vegan","").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","").replace("free","")
+    finalstring = lowerstring
+    finalstring = finalstring.replace("glutenfree", "gluten-free").replace("dairyfree", "dairy-free").replace("wheatfree", "wheat-free")
+  if not any(x in lowerstring for x in specificfood):
+    finalstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("vegan","").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","").replace("free","")
   values = [finalstring, intolerance]
   return(values)
 
@@ -98,7 +102,7 @@ conversation_history = [{"role":"system", "content":"Hello! I am Herb. What type
 
 def generate_prompt(query):
     conversation_history.append({"role":"user", "content":query})
-    collection_name = "restaurantlist2"
+    collection_name = "restaurantlist7"
     collection = chromaclient.get_collection(name=collection_name)
     filteredqueryandmetadata = intolerancefilter(query)
     filteredquery = filteredqueryandmetadata[0]
