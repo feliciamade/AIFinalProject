@@ -44,10 +44,14 @@ def get_embedding(text: str) -> list[float]:
     embedding = model.encode(text)
     return embedding.tolist()
 
+#add an embedding column to the dataframe to hold the embeddings
 df["embedding"] = df["Description"].apply(get_embedding)
 
+#The data is also stored in the backend in a folder called vectorstore.
+#This was created by a persistent client.
 #chroma_client = chromadb.PersistentClient(path="./vectorstore")
 
+#Connecting to chroma cloud
 chroma_client = chromadb.CloudClient(
   api_key='ck-4ZHQ41171HcAmeUvuNx3giWmsQStDsa3EzmMEhLkzsQC',
   tenant='c29efb95-933f-4582-bb95-07481e3a03a0',
@@ -56,7 +60,7 @@ chroma_client = chromadb.CloudClient(
 
 collection = chroma_client.create_collection(name="restaurantlist2")
 
-
+#Adding the data to chroma.
 for i, row in df.iterrows():
     collection.add(
         ids=[str(i)],
@@ -68,7 +72,8 @@ for i, row in df.iterrows():
         }],
         documents=[row["Description"]]
     )
- 
+
+#Code to delete a collection in chroma
 # try:
 #     chroma_client.delete_collection(name="restaurantlist")
 #     print("Existing collection deleted.")

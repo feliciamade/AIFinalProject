@@ -24,7 +24,7 @@ return(
   <div className={styles.content}>
 
   <div className={styles.left}>
-     <h1>Rooted in <span className={styles.underlineText}>  Community </span> , Revived by Food </h1>
+     <h1>Rooted in <span className={styles.underlineText}>  Community, </span>  Revived by Food </h1>
     <p className={styles.heroText}> Connecting you to the freshest
     local produce, crafted into vibrant meals. </p>
   </div>
