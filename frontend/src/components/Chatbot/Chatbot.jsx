@@ -1,42 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from './Chatbot.module.css';
+import api from "../../api";
 
 const Chatbot = () => {
   const [chatHistory, setChatHistory] = useState([
     { sender: "bot", message: "Hi there! How can I help you today?" },
   ]);
   const [userInput, setUserInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false); 
   const chatContainerRef = useRef();
 
-  const backendUrl = "http://localhost:8000/ask";
-
   const handleSend = async () => {
-    if (userInput.trim() === "") return;
+    if (userInput.trim() === "" || isLoading) return;
 
     const newUserMessage = { sender: "user", message: userInput };
     setChatHistory((prev) => [...prev, newUserMessage]);
-
     setUserInput("");
+    setIsLoading(true);
 
     try {
-      const response = await fetch(backendUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message: userInput }),
-      });
+      const response = await api.post("/ask", { message: userInput });
+      const data = response.data;
+      console.log('Response data:', data);
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-      console.log('Response data:', data); 
-
-     
       if (Array.isArray(data)) {
-        setChatHistory(data);
+        setChatHistory((prev) => [...prev, ...data]);
       } else {
         console.warn("Unexpected response format:", data);
         setChatHistory((prev) => [
@@ -50,9 +38,12 @@ const Chatbot = () => {
         ...prev,
         { sender: "bot", message: "Sorry, there was an error." },
       ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  // Scroll to bottom when chat history updates
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTo({
@@ -61,6 +52,14 @@ const Chatbot = () => {
       });
     }
   }, [chatHistory]);
+
+  // Handle pressing Enter key to send message
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   return (
     <div className={styles.chatbotPopup}>
@@ -86,9 +85,15 @@ const Chatbot = () => {
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           placeholder="Type your message..."
+          onKeyDown={handleKeyDown}
+          disabled={isLoading}
         />
-        <button className={styles.chatFooterButton} onClick={handleSend}>
-          Send
+        <button
+          className={styles.chatFooterButton}
+          onClick={handleSend}
+          disabled={isLoading}
+        >
+          {isLoading ? "Sending..." : "Send"}
         </button>
       </div>
     </div>
