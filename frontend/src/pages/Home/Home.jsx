@@ -6,6 +6,7 @@ import styles from "./Home.module.css";
 //Components
 import Article from "../../components/Article/Article.jsx";
 import Layout from "../../components/Layout/Layout.jsx"; 
+import Chatbot from "../../components/Chatbot/Chatbot.jsx"; 
 //import MemphisMap from "../../components/Map/Map.jsx"; 
 
 //Images
@@ -20,10 +21,10 @@ return(
 
 <main >
 
-   
   <div className={styles.content}>
-
+    <Chatbot />
   <div className={styles.left}>
+    
      <h1>Rooted in <span className={styles.underlineText}>  Community </span> , Revived by Food </h1>
     <p className={styles.heroText}> Connecting you to the freshest
     local produce, crafted into vibrant meals. </p>
