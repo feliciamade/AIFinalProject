@@ -18,7 +18,7 @@ export default function ModalContent({ onClose }) {
       while (parentNode.firstChild) {
         parentNode.removeChild(parentNode.firstChild);
         }
-
+        let i = 0
         conversation.forEach(message => {
             let x = document.createElement('div');
             if (message.role === "assistant"){
@@ -27,6 +27,7 @@ export default function ModalContent({ onClose }) {
                 x.className = styles.userMessage;}
             else if (message.role === "system"){
                 x.className = styles.botMessage;}
+            x.id = `${i}`
             let y = document.createElement('p');
             y.className = styles.messageText;
             y.innerHTML = `${message.content}`;
@@ -34,8 +35,15 @@ export default function ModalContent({ onClose }) {
                 y.innerHTML = "Greetings 🌿, my name is Herb. How can I assist you?"};
             x.appendChild(y);
             parentNode.appendChild(x);
+            i++
     })
-    
+        let target = conversation.length - 2
+        target = `${target}`
+        console.log(target)
+        let lastChatMessage = document.getElementById(target)
+        lastChatMessage.scrollIntoView({behavior:'smooth', block:'start'})
+        // parentNode.scrollTop = parentNode.scrollHeight;
+
       }
     
       function handleSubmit(event){
