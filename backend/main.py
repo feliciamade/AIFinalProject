@@ -74,7 +74,7 @@ def intolerancefilter(string):
   gluten=["gluten", "celiac", "gf", "wheat"]
   dairy=["dairy"]
   vegan=["vegan","plant"]
-  specificfood=["hamburger","burger","cake", "sandwich"]
+  specificfood=["hamburger","burger","cake", "sandwich", "bakery"]
   lowerstring=string.lower()
   for punctuation in ',.?;"-':
     lowerstring = lowerstring.replace(punctuation, "")
@@ -109,17 +109,18 @@ def generate_prompt(query):
     metadata = filteredqueryandmetadata[1]
     query_vector = get_embedding(filteredquery)
     if len(metadata) == 0:
-        results = collection.query(query_embeddings=[query_vector], n_results=1)
+        results = collection.query(query_embeddings=[query_vector], n_results=3)
     if len(metadata) == 1:
-        results = collection.query(query_embeddings=[query_vector], where=metadata[0], n_results=1)
+        results = collection.query(query_embeddings=[query_vector], where=metadata[0], n_results=3)
     if len(metadata) > 1: 
-        results = collection.query(query_embeddings=[query_vector], where={"$and": metadata}, n_results=1)
-    restaurant = results["documents"][0][0]
+        results = collection.query(query_embeddings=[query_vector], where={"$and": metadata}, n_results=3)
+    restaurant = results["documents"]
     print(restaurant)
     PROMPT = f"""
     query: {query}
     If the query does not ask about a restaurant recommendation or where to get food answer the query as it is.
     If the query asks for a restaurant recommendation or where to get food, use the following restuarant information to answer user query.
+    If they use the singular to ask for a restaurant or food, only give them one restaurant. Otherwise, you can recommend multiple.
     {restaurant}
         """
     return PROMPT
