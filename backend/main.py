@@ -115,20 +115,20 @@ def generate_prompt(query):
     if len(metadata) > 1: 
         results = collection.query(query_embeddings=[query_vector], where={"$and": metadata}, n_results=3)
     restaurant = results["documents"]
-    print(restaurant)
     PROMPT = f"""
     query: {query}
     If the query does not ask about a restaurant recommendation or where to get food answer the query as it is.
     If the query asks for a restaurant recommendation or where to get food, use the following restuarant information to answer user query.
     If they use the singular to ask for a restaurant or food, only give them one restaurant. Otherwise, you can recommend multiple.
     {restaurant}
+    Conversation history: {conversation_history}
         """
     return PROMPT
 
 def chat_with_gpt(query):
     response = client.models.generate_content(
         model="gemini-2.5-flash",
-        contents=f"You are friendly food expert {query}. If the user is getting a restaurant recommendation make it seem like a review and include what they will enjoy about it.",
+        contents=f"You are friendly food expert {query}. If the user is getting a restaurant recommendation make it seem like a review and include what they will enjoy about it. Incorporate line breaks in your answer where it is appropriate using <br>.",
         config=types.GenerateContentConfig(
             thinking_config=types.ThinkingConfig(thinking_budget=0) # Disables thinking
         ),
