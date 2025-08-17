@@ -90,7 +90,7 @@ def intolerancefilter(string):
     finalstring = lowerstring
     finalstring = finalstring.replace("glutenfree", "gluten-free").replace("dairyfree", "dairy-free").replace("wheatfree", "wheat-free")
   if not any(x in lowerstring for x in specificfood):
-    finalstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("vegan","").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","").replace("free","")
+    finalstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","").replace("free","")
   values = [finalstring, intolerance]
   return(values)
 
