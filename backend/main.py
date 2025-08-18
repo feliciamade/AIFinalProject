@@ -66,7 +66,7 @@ chromaclient = chromadb.HttpClient(
 #model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
 
 def get_embedding(text):
-    model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
+    model = SentenceTransformer("sentence-transformers/msmarco-bert-base-dot-v5")
     return model.encode(text).tolist()
 
 def intolerancefilter(string):
@@ -102,7 +102,7 @@ conversation_history = [{"role":"system", "content":"Hello! I am Herb. What type
 
 def generate_prompt(query):
     conversation_history.append({"role":"user", "content":query})
-    collection_name = "restaurantlist7"
+    collection_name = "restaurantlist9"
     collection = chromaclient.get_collection(name=collection_name)
     filteredqueryandmetadata = intolerancefilter(query)
     filteredquery = filteredqueryandmetadata[0]
