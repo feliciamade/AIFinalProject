@@ -42,7 +42,7 @@ def restaurant_info_layout(restaurants):
 
 client = genai.Client()
 
-model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
+model = SentenceTransformer("sentence-transformers/msmarco-bert-base-dot-v5")
 
 df["layout"] = df.apply(restaurant_info_layout, axis=1)
 
@@ -70,7 +70,7 @@ chroma_client = chromadb.CloudClient(
   database='Restaurants2'
 )
 
-collection = chroma_client.create_collection(name="restaurantlist7")
+collection = chroma_client.create_collection(name="restaurantlist9")
 
 # Adding the data to chroma.
 for i, row in df.iterrows():
