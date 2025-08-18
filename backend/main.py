@@ -1,5 +1,6 @@
 import uvicorn
 import os
+import string
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -22,6 +23,7 @@ app = FastAPI(debug=True)
 
 origins = [
     "http://localhost:3000",
+    "http://localhost:5173",
     # Add more origins here
 ]
 
@@ -64,35 +66,69 @@ chromaclient = chromadb.HttpClient(
 #model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
 
 def get_embedding(text):
-    model = SentenceTransformer("multi-qa-mpnet-base-cos-v1")
+    model = SentenceTransformer("sentence-transformers/msmarco-bert-base-dot-v5")
     return model.encode(text).tolist()
+
+def intolerancefilter(string):
+  intolerance=[]
+  gluten=["gluten", "celiac", "gf", "wheat"]
+  dairy=["dairy"]
+  vegan=["vegan","plant"]
+  specificfood=["hamburger","burger","cake", "sandwich", "bakery"]
+  lowerstring=string.lower()
+  for punctuation in ',.?;"-':
+    lowerstring = lowerstring.replace(punctuation, "")
+  if any(x in lowerstring for x in gluten):
+    intolerance.append({"gluten-free": True})
+  if any(x in lowerstring for x in dairy):
+    intolerance.append({"dairy-free": True})
+  if any(x in lowerstring for x in vegan):
+    intolerance.append({"vegan": True})
+  #newstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("vegan","").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","")
+  for punctuation in ',.?;"':
+    lowerstring = lowerstring.replace(punctuation, "")
+    finalstring = lowerstring
+    finalstring = finalstring.replace("glutenfree", "gluten-free").replace("dairyfree", "dairy-free").replace("wheatfree", "wheat-free")
+  if not any(x in lowerstring for x in specificfood):
+    finalstring = lowerstring.replace("gluten free", "").replace("no gluten", "").replace("gluten", "").replace("gluten-free", "").replace("non gluten","").replace("wheat free", "").replace("dairy free","").replace("non dairy","").replace("no dairy","").replace("nondairy","").replace("dairy","").replace("free","")
+  values = [finalstring, intolerance]
+  return(values)
 
 # query_vector = get_embedding("Where can I get a vegan hamburger?")
 # results = collection.query(query_embeddings=[query_vector], n_results=2)
 # print(results["documents"][0][0])
 
-conversation_history = [{"role":"system", "content":"Hello! I am Erb. What type of restaurant are you looking for?"}]
+conversation_history = [{"role":"system", "content":"Hello! I am Herb. What type of restaurant are you looking for?"}]
 
 def generate_prompt(query):
     conversation_history.append({"role":"user", "content":query})
-    collection_name = "restaurantlist2"
+    collection_name = "restaurantlist9"
     collection = chromaclient.get_collection(name=collection_name)
-    query_vector = get_embedding(query)
-    results = collection.query(query_embeddings=[query_vector], n_results=1)
-    restaurant = results["documents"][0][0]
+    filteredqueryandmetadata = intolerancefilter(query)
+    filteredquery = filteredqueryandmetadata[0]
+    metadata = filteredqueryandmetadata[1]
+    query_vector = get_embedding(filteredquery)
+    if len(metadata) == 0:
+        results = collection.query(query_embeddings=[query_vector], n_results=3)
+    if len(metadata) == 1:
+        results = collection.query(query_embeddings=[query_vector], where=metadata[0], n_results=3)
+    if len(metadata) > 1: 
+        results = collection.query(query_embeddings=[query_vector], where={"$and": metadata}, n_results=3)
+    restaurant = results["documents"]
     PROMPT = f"""
     query: {query}
-    If the query does not ask about a restaurant recommendation just answer the query as it is.
-    If the query asks for a restaurant recommendation, use the following restuarant information to answer user query.
+    If the query does not ask about a restaurant recommendation or where to get food answer the query as it is.
+    If the query asks for a restaurant recommendation or where to get food, use the following restuarant information to answer user query.
+    If they use the singular to ask for a restaurant or food, only give them one restaurant. Otherwise, you can recommend multiple.
     {restaurant}
+    Conversation history: {conversation_history}
         """
     return PROMPT
-
 
 def chat_with_gpt(query):
     response = client.models.generate_content(
         model="gemini-2.5-flash",
-        contents=f"You are friendly food expert {query}. If the user is getting a restaurant recommendation make it seem like a review and include what they will enjoy about it.",
+        contents=f"You are friendly food expert {query}. If the user is getting a restaurant recommendation make it seem like a review and include what they will enjoy about it. Incorporate line breaks in your answer where it is appropriate using <br>.",
         config=types.GenerateContentConfig(
             thinking_config=types.ThinkingConfig(thinking_budget=0) # Disables thinking
         ),

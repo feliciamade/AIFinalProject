@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styles from "./NavBar.module.css";
 import Button from "../Button/Button.jsx";
 import Popup from "../Popup/Popup.jsx";
+import PortalExample from './PortalExample';
+
 
 function NavBar() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -23,7 +25,8 @@ function NavBar() {
         <a href="/Contact">Contact</a>
         <a href="/about">Mission</a>
       </div>
-      <Button name="Ask Herb" onClick={handleChatButtonClick} />
+      {/* <Button name="Ask Herb" onClick={handleChatButtonClick} /> */}
+      <PortalExample/>
         
       {isChatOpen && <Popup onClose={handleClosePopup} />}
     </nav>
