@@ -4,3 +4,8 @@ __pycache__
 msdocs-python-fastapi-webapp-quickstart
 prompt_generator.py
 test_prompt_generator.py
+.pytest_cache
+new_embeddings.csv
+query.py
+restaurants.csv
+vector2.py

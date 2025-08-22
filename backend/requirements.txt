@@ -8,3 +8,4 @@ sentence_transformers
 requests==2.31.0
 pytest>=8.2.3
 pytest-mock>=3.12.1
+psycopg2
