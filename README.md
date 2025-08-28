@@ -1,3 +1,6 @@
+https://github.com/user-attachments/assets/84705274-5a49-481d-9757-b3afd12c8314
+
+
 # AIFinalProject
 ## Root and Revive
 This is an App that will make it easier for users to find menu items that fit their dietary requirements when they visit a restaurant. A chatbot can help them plan and budget their meals when they eat out. 
